@@ -1,0 +1,9 @@
+name: Chestlock
+author: Kasyyy
+version: 1.0.0
+main: de.kasyyy.chestlock.main.Chestlock
+api-version: 1.16
+commands:
+  chestlock:
+    usage: /chestlock [add | remove] [Player]
+    description: Use this command to lock a chest and manage your permissions.
