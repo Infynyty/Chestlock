@@ -74,7 +74,7 @@ public class CMDChestLock implements CommandExecutor {
 
 
             //Unlocks a locked chest
-            if(strings.length == 1 && strings[0].equalsIgnoreCase("remove")) {
+            if(strings.length == 1 && strings[0].equalsIgnoreCase("unlock")) {
                 if(!(LockedChest.lockedChestExists(block))) {
                     p.sendMessage(Util.prefix + "This chest is not locked!");
                     return true;
