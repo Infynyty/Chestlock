@@ -84,7 +84,7 @@ public class LockedChest {
         allowedPlayers.add(targetUUID.toString());
         instance.getConfig().set(id + ".AllowedPlayers", allowedPlayers);
         instance.saveConfig();
-        sender.sendMessage(Util.prefix + Bukkit.getPlayer(targetUUID).getDisplayName() + " can now access this chest!");
+        sender.sendMessage(Util.prefix + Bukkit.getPlayer(targetUUID).getName() + " can now access this chest!");
     }
 
     /**

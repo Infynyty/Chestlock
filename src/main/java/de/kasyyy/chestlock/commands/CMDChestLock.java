@@ -12,13 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.DoubleChestInventory;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.concurrent.locks.Lock;
 
 
 public class CMDChestLock implements CommandExecutor {
@@ -61,25 +54,13 @@ public class CMDChestLock implements CommandExecutor {
                 }
 
                 //Checks if a chest is a double chest and if so both locations will be saved
-                if(block.getType().equals(Material.CHEST)) {
 
-                    BlockState state = block.getState();
-                    Chest chest = (Chest) state;
-                    InventoryHolder inventoryHolder = chest.getInventory().getHolder();
-
-                    if(inventoryHolder instanceof DoubleChest) {
-
-                        DoubleChest doubleChest = ((DoubleChest) inventoryHolder);
-
-                        Chest leftChest = (Chest) doubleChest.getLeftSide();
-                        Chest rightChest = (Chest) doubleChest.getRightSide();
-
-                        new LockedChest(leftChest.getBlock(), p.getUniqueId());
-                        new LockedChest(rightChest.getBlock(), p.getUniqueId());
-                        p.sendMessage(Util.prefix + "The double chest has been locked! Give access permission to other players through the command </chestlock add <Player>>");
-                        return true;
-
-                    }
+                Block secondChest = Util.checkDoubleChest(block);
+                if(secondChest != null) {
+                    new LockedChest(block, p.getUniqueId());
+                    new LockedChest(secondChest, p.getUniqueId());
+                    p.sendMessage(Util.prefix + "The double chest has been locked! Give access permission to other players through the command </chestlock add <Player>>");
+                    return true;
                 }
 
                 new LockedChest(block, p.getUniqueId());
@@ -92,29 +73,30 @@ public class CMDChestLock implements CommandExecutor {
 
 
 
+            //Unlocks a locked chest
             if(strings.length == 1 && strings[0].equalsIgnoreCase("remove")) {
                 if(!(LockedChest.lockedChestExists(block))) {
                     p.sendMessage(Util.prefix + "This chest is not locked!");
+                    return true;
                 }
 
                 LockedChest lockedChest = new LockedChest(block);
                 if(!(p.getUniqueId().equals(lockedChest.getOwner())
                         || lockedChest.getAllowedPlayers().contains(p.getUniqueId().toString()))) {
                     p.sendMessage(Util.prefix + "You can't unlock chests that you don't own!");
+                    return true;
                 }
-                ArrayList<Block> blocks = new ArrayList<>(Arrays.asList(block.getRelative(BlockFace.NORTH),
-                        block.getRelative(BlockFace.SOUTH),
-                        block.getRelative(BlockFace.WEST),
-                        block.getRelative(BlockFace.EAST)));
 
-                for(Block surroundingBlocks : blocks) {
-                    if(!(LockedChest.lockedChestExists(surroundingBlocks))) continue;
-                    LockedChest otherLockedChest = new LockedChest(surroundingBlocks);
+                Block secondChest = Util.checkDoubleChest(block);
+                if(secondChest != null && LockedChest.lockedChestExists(secondChest)) {
+                    LockedChest secondLockedChest = new LockedChest(secondChest);
+                    secondLockedChest.removeChest();
                     lockedChest.removeChest();
-                    otherLockedChest.removeChest();
                     p.sendMessage(Util.prefix + "Double chest unlocked!");
                     return true;
                 }
+
+
                 lockedChest.removeChest();
                 p.sendMessage(Util.prefix + "Chest unlocked!");
             }
@@ -130,7 +112,7 @@ public class CMDChestLock implements CommandExecutor {
             if(strings.length == 2 && strings[0].equalsIgnoreCase("add")) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(strings[1]);
 
-                if(target.getUniqueId() == null) {
+                if(!(target.hasPlayedBefore())) {
                     p.sendMessage(Util.prefix + "This player has never been online!");
                     return true;
                 }
@@ -144,7 +126,8 @@ public class CMDChestLock implements CommandExecutor {
 
                     Block secondChest = Util.checkDoubleChest(block);
                     if(secondChest != null && LockedChest.lockedChestExists(secondChest)) {
-                        lockedChest.addAllowedPlayer(p, target.getUniqueId());
+                        LockedChest secondLockedChest = new LockedChest(secondChest);
+                        secondLockedChest.addAllowedPlayer(p, target.getUniqueId());
                     }
 
 
@@ -160,7 +143,7 @@ public class CMDChestLock implements CommandExecutor {
 
 
 
-
+            //Removes a player from the list of allowed players
             if(strings.length == 2 && strings[0].equalsIgnoreCase("remove")) {
                 OfflinePlayer target = Bukkit.getOfflinePlayer(strings[1]);
                 if(LockedChest.lockedChestExists(block)) {
@@ -169,13 +152,14 @@ public class CMDChestLock implements CommandExecutor {
                         p.sendMessage(Util.prefix + "You are not the owner of this chest!");
                         return true;
                     }
-                    if(target.getUniqueId() == null) {
+                    if(!(target.hasPlayedBefore())) {
                         p.sendMessage(Util.prefix + "This player has never been online!");
                         return true;
                     }
                     Block secondChest = Util.checkDoubleChest(block);
                     if(secondChest != null && LockedChest.lockedChestExists(secondChest)) {
-                        lockedChest.removeAllowedPlayer(p, target.getUniqueId());
+                        LockedChest secondLockedChest = new LockedChest(secondChest);
+                        secondLockedChest.removeAllowedPlayer(p, target.getUniqueId());
                     }
 
                     lockedChest.removeAllowedPlayer(p, target.getUniqueId());
