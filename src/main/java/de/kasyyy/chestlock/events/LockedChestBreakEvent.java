@@ -1,14 +1,14 @@
 package de.kasyyy.chestlock.events;
 
-import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import de.kasyyy.chestlock.LockedChest;
 import de.kasyyy.chestlock.util.Util;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 
 public class LockedChestBreakEvent implements Listener {
 
@@ -38,9 +38,11 @@ public class LockedChestBreakEvent implements Listener {
     }
 
     @EventHandler
-    public void onExplode(BlockExplodeEvent e) {
-        if(LockedChest.lockedChestExists(e.getBlock())) {
-            new LockedChest(e.getBlock()).removeChest();
+    public void onExplode(EntityExplodeEvent e) {
+        for(Block block : e.blockList()) {
+            if(LockedChest.lockedChestExists(block)) {
+                new LockedChest(block).removeChest();
+            }
         }
     }
 }
