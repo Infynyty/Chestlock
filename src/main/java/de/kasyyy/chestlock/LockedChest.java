@@ -2,7 +2,6 @@ package de.kasyyy.chestlock;
 
 import de.kasyyy.chestlock.main.Chestlock;
 import de.kasyyy.chestlock.util.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -84,7 +83,6 @@ public class LockedChest {
         allowedPlayers.add(targetUUID.toString());
         instance.getConfig().set(id + ".AllowedPlayers", allowedPlayers);
         instance.saveConfig();
-        sender.sendMessage(Util.prefix + Bukkit.getPlayer(targetUUID).getName() + " can now access this chest!");
     }
 
     /**
@@ -101,7 +99,6 @@ public class LockedChest {
         allowedPlayers.remove(targetUUID.toString());
         instance.getConfig().set(id + ".AllowedPlayers", allowedPlayers);
         instance.saveConfig();
-        sender.sendMessage(Util.prefix + Bukkit.getPlayer(targetUUID).getDisplayName() + " can no longer access this chest!");
     }
 
     /**
