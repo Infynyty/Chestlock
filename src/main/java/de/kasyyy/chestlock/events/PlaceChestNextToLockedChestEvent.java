@@ -67,6 +67,8 @@ public class PlaceChestNextToLockedChestEvent implements Listener {
                 }
             }, 1);
         }
+
+        //Prevents a player that doesn't have access to a LockedChest from placing a hopper next to it
         else if(e.getBlock().getType().equals(Material.HOPPER)) {
             ArrayList<Block> AdjacentBlocks = new ArrayList<>(Arrays.asList(
                     e.getBlock().getRelative(BlockFace.NORTH),
