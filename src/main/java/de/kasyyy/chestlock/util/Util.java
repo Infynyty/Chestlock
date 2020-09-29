@@ -7,8 +7,8 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Chest;
 import org.bukkit.block.DoubleChest;
 import org.bukkit.inventory.InventoryHolder;
+import org.jetbrains.annotations.Nullable;
 
-import javax.annotation.Nullable;
 
 public class Util {
     public static final String prefix = ChatColor.AQUA + "[Chestlock]>> " + ChatColor.DARK_GRAY;
@@ -39,5 +39,7 @@ public class Util {
         }
         return null;
     }
+
+
 
 }

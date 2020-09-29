@@ -17,7 +17,7 @@ public class LockedChest {
     private int id;
     private Block block;
     private UUID owner;
-    private ArrayList<String> allowedPlayers = new ArrayList();
+    private ArrayList<String> allowedPlayers = new ArrayList<>();
     private static ArrayList<Material> allowedMaterials = new ArrayList(Arrays.asList(Material.CHEST, Material.SHULKER_BOX, Material.FURNACE));
 
     /**

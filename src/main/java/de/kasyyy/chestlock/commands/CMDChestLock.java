@@ -1,13 +1,12 @@
 package de.kasyyy.chestlock.commands;
 
 import de.kasyyy.chestlock.LockedChest;
-import de.kasyyy.chestlock.main.Chestlock;
 import de.kasyyy.chestlock.util.Util;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.block.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ public class CMDChestLock implements CommandExecutor {
             //Checks whether the targeted block is in reach and is eligible
             if(!(commandSender instanceof Player)) return true;
             Player p = (Player) commandSender;
-            Block block = p.getTargetBlock(30);
+            Block block = p.getTargetBlock(null, 30);
             if(block == null) {
                 p.sendMessage(Util.prefix + "The targeted block is not a chest. The chest must be within 30 blocks of the player!");
                 return true;
@@ -30,6 +29,7 @@ public class CMDChestLock implements CommandExecutor {
             if(!(block.getType().equals(Material.CHEST) ||
                     block.getType().equals(Material.ENDER_CHEST) ||
                     block.getType().equals(Material.SHULKER_BOX) ||
+                    block.getState() instanceof ShulkerBox ||
                     block.getType().equals(Material.FURNACE))) {
                 p.sendMessage(Util.prefix + "The targeted block is not a chest. The chest must be within 30 blocks of the player!");
                 return true;

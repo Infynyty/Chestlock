@@ -4,6 +4,7 @@ import de.kasyyy.chestlock.LockedChest;
 import de.kasyyy.chestlock.util.Util;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -16,6 +17,7 @@ public class LockedChestBreakEvent implements Listener {
     public void onBreakLockedChest(BlockBreakEvent e) {
         if(!(e.getBlock().getType().equals(Material.CHEST) ||
                 e.getBlock().getType().equals(Material.SHULKER_BOX) ||
+                e.getBlock().getState() instanceof ShulkerBox ||
                 e.getBlock().getType().equals(Material.FURNACE))) {
             return;
         }
