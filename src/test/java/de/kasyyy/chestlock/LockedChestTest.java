@@ -32,7 +32,7 @@ public class LockedChestTest {
     private UUID senderUUID = UUID.randomUUID();
     private UUID targetUUID = UUID.randomUUID();
 
-    private LockedChest lockedChestSpy;
+    private LockedChest lockedChest;
 
 
 
@@ -45,8 +45,8 @@ public class LockedChestTest {
         Mockito.when(senderMock.getUniqueId()).thenReturn(senderUUID);
         Mockito.when(targetMock.getUniqueId()).thenReturn(targetUUID);
 
-        lockedChestSpy = Mockito.spy(new LockedChest(mockWorld.getBlockAt(0,0,0), senderUUID));
-        Mockito.when(lockedChestSpy.getOwner()).thenReturn(senderUUID);
+        lockedChest = new LockedChest(mockWorld.getBlockAt(0,0,0), senderUUID);
+
     }
 
 
@@ -54,10 +54,10 @@ public class LockedChestTest {
     public void testAddAllowedPlayer() {
         server.setPlayers(2);
 
-        lockedChestSpy.addAllowedPlayer(senderMock, targetMock.getUniqueId());
+        lockedChest.addAllowedPlayer(senderMock, targetMock.getUniqueId());
 
-        assertEquals(1, lockedChestSpy.getAllowedPlayers().size());
-        assertTrue(lockedChestSpy.getAllowedPlayers().contains(targetMock.getUniqueId().toString()));
+        assertEquals(1, lockedChest.getAllowedPlayers().size());
+        assertTrue(lockedChest.getAllowedPlayers().contains(targetMock.getUniqueId().toString()));
     }
 
     @Test
@@ -65,38 +65,38 @@ public class LockedChestTest {
         server.setPlayers(2);
 
 
-        lockedChestSpy.addAllowedPlayer(senderMock, senderMock.getUniqueId());
+        lockedChest.addAllowedPlayer(senderMock, senderMock.getUniqueId());
 
-        assertEquals(0, lockedChestSpy.getAllowedPlayers().size());
+        assertEquals(0, lockedChest.getAllowedPlayers().size());
     }
 
     @Test
     public void testAddPlayerTwice() {
         server.setPlayers(2);
 
-        lockedChestSpy.addAllowedPlayer(senderMock, targetMock.getUniqueId());
-        lockedChestSpy.addAllowedPlayer(senderMock, targetMock.getUniqueId());
+        lockedChest.addAllowedPlayer(senderMock, targetMock.getUniqueId());
+        lockedChest.addAllowedPlayer(senderMock, targetMock.getUniqueId());
 
-        assertEquals(1, lockedChestSpy.getAllowedPlayers().size());
+        assertEquals(1, lockedChest.getAllowedPlayers().size());
     }
 
     @Test
     public void testRemovePlayer() {
         server.setPlayers(2);
 
-        lockedChestSpy.addAllowedPlayer(senderMock, targetUUID);
+        lockedChest.addAllowedPlayer(senderMock, targetUUID);
 
-        lockedChestSpy.removeAllowedPlayer(senderMock, targetUUID);
+        lockedChest.removeAllowedPlayer(senderMock, targetUUID);
 
-        assertEquals(0, lockedChestSpy.getAllowedPlayers().size());
-        assertFalse(lockedChestSpy.getAllowedPlayers().contains(targetUUID.toString()));
+        assertEquals(0, lockedChest.getAllowedPlayers().size());
+        assertFalse(lockedChest.getAllowedPlayers().contains(targetUUID.toString()));
     }
 
     @Test
     public void testRemovePlayerNotInList() {
-        lockedChestSpy.removeAllowedPlayer(senderMock, targetUUID);
+        lockedChest.removeAllowedPlayer(senderMock, targetUUID);
 
-        assertEquals(0, lockedChestSpy.getAllowedPlayers().size());
+        assertEquals(0, lockedChest.getAllowedPlayers().size());
     }
 
     @After
