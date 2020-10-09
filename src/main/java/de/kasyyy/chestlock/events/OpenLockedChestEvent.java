@@ -2,7 +2,6 @@ package de.kasyyy.chestlock.events;
 
 import de.kasyyy.chestlock.LockedChest;
 import de.kasyyy.chestlock.util.Util;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryOpenEvent;

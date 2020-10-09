@@ -17,7 +17,7 @@ public class LockedChest {
     private int id;
     private Block block;
     private UUID owner;
-    private ArrayList<String> allowedPlayers = new ArrayList<>();
+    private ArrayList<String> allowedPlayers;
     private static ArrayList<Material> allowedMaterials = new ArrayList(Arrays.asList(Material.CHEST, Material.SHULKER_BOX, Material.FURNACE));
 
     /**
@@ -26,6 +26,7 @@ public class LockedChest {
      */
     public LockedChest(Block block) {
 
+        allowedPlayers = new ArrayList<>();
         for(String key : instance.getConfig().getKeys(false)) {
             if(key.equalsIgnoreCase("Last-Counter-Used")) continue;
 
@@ -57,6 +58,7 @@ public class LockedChest {
      * @param ownerUUID
      */
     public LockedChest(Block block, UUID ownerUUID) {
+        allowedPlayers = new ArrayList<>();
         instance.getConfig().set("Last-Counter-Used", instance.getConfig().getInt("Last-Counter-Used") + 1);
         id = instance.getConfig().getInt("Last-Counter-Used");
         instance.getConfig().set(id + ".X", block.getX());

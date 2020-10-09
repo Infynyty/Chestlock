@@ -6,11 +6,25 @@ import de.kasyyy.chestlock.events.OpenLockedChestEvent;
 import de.kasyyy.chestlock.events.PlaceChestNextToLockedChestEvent;
 import de.kasyyy.chestlock.util.Util;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.java.JavaPluginLoader;
+
+import java.io.File;
 
 public class Chestlock extends JavaPlugin {
 
     private static Chestlock chestlock = null;
+
+    public Chestlock()
+    {
+        super();
+    }
+
+    protected Chestlock(JavaPluginLoader loader, PluginDescriptionFile description, File dataFolder, File file)
+    {
+        super(loader, description, dataFolder, file);
+    }
 
     @Override
     public void onEnable() {

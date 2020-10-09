@@ -13,7 +13,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
-public class CMDChestLock implements CommandExecutor {
+public final class CMDChestLock implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -165,8 +165,7 @@ public class CMDChestLock implements CommandExecutor {
                     lockedChest.removeAllowedPlayer(p, target.getUniqueId());
                     p.sendMessage(Util.prefix + "Removed player!");
                     return true;
-                }
-                else {
+                } else {
                     p.sendMessage(Util.prefix + "This chest is not locked!");
                     return true;
                 }
