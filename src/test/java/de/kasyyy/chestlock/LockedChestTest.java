@@ -97,6 +97,7 @@ public class LockedChestTest {
         lockedChest.removeAllowedPlayer(senderMock, targetUUID);
 
         assertEquals(0, lockedChest.getAllowedPlayers().size());
+
     }
 
     @After
